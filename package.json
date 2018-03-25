@@ -1,0 +1,43 @@
+{
+  "name": "repo-scraper",
+  "version": "0.0.0",
+  "description": "",
+  "main": "lib/index.js",
+  "scripts": {
+    "clean": "rm -rf coverage/ tmp/",
+    "test": "jest --no-cache"
+  },
+  "author": "Jon Lauridsen <mail@jonlauridsen.com>",
+  "license": "ISC",
+  "dependencies": {
+    "fs-extra": "^5.0.0",
+    "htmldom": "^3.0.4",
+    "image-size": "^0.6.2",
+    "json-stable-stringify": "^1.0.1",
+    "lodash": "^4.17.5",
+    "lowdb": "^1.0.0",
+    "request": "^2.85.0",
+    "request-promise-native": "^1.0.5",
+    "url-join": "^4.0.0"
+  },
+  "devDependencies": {
+    "jest": "^22.4.3",
+    "nock": "^9.2.3",
+    "tmp-promise": "^1.0.4"
+  },
+  "jest": {
+    "collectCoverage": true,
+    "coverageReporters": [
+      "html",
+      "text-summary"
+    ],
+    "collectCoverageFrom": [
+      "**/*.js"
+    ],
+    "coveragePathIgnorePatterns": [
+      "<rootDir>/coverage/",
+      "<rootDir>/node_modules/"
+    ],
+    "testRegex": ".(test|spec)\\.jsx?$"
+  }
+}
