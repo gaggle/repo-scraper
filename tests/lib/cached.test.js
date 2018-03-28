@@ -2,7 +2,7 @@ const fs = require('fs-extra')
 const path = require('path')
 const tmp = require('tmp-promise')
 
-const Cached = require('../lib/cached')
+const Cached = require('../../lib/cached')
 
 const FIXTURE_PATH = path.join(__dirname, 'fixtures')
 

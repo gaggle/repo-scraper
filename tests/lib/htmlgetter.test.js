@@ -1,6 +1,6 @@
 const nock = require('nock')
 
-const HtmlGetter = require('../lib/htmlgetter')
+const HtmlGetter = require('../../lib/htmlgetter')
 
 describe('HtmlGetter', () => {
   let htmlGetter

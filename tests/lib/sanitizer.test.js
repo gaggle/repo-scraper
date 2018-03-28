@@ -1,4 +1,4 @@
-const sanitizer = require('../lib/sanitizer')
+const sanitizer = require('../../lib/sanitizer')
 
 describe('filenameify', () => {
   it('should lowercase string', () => {

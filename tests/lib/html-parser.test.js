@@ -1,4 +1,4 @@
-const htmlParser = require('../lib/html-parser')
+const htmlParser = require('../../lib/html-parser')
 
 describe('parseImages', () => {
   it('should be empty with no images', async () => {
