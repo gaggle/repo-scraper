@@ -4,8 +4,8 @@ const Cached = require('../../lib/cached')
 const Container = require('../../lib/cachedcontainer')
 const HtmlGetter = require('../../lib/htmlgetter')
 
-jest.mock('../lib/cached')
-jest.mock('../lib/htmlgetter')
+jest.mock('../../lib/cached')
+jest.mock('../../lib/htmlgetter')
 
 describe('CachedHtmlContainer', () => {
   let cache

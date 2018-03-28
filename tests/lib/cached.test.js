@@ -4,7 +4,7 @@ const tmp = require('tmp-promise')
 
 const Cached = require('../../lib/cached')
 
-const FIXTURE_PATH = path.join(__dirname, 'fixtures')
+const RESOURCE_PATH = path.join(__dirname, '..', 'fixtures', 'resource-files')
 
 describe('Cached', () => {
   let cachePath
@@ -30,7 +30,7 @@ describe('Cached', () => {
       // then we grab a new instance to see if it comes with that data
       const cached = new Cached(cachePath)
 
-      const numExpectedKeys = (await fs.readdir(FIXTURE_PATH)).length + 1 // We _add one non-file entry
+      const numExpectedKeys = (await fs.readdir(RESOURCE_PATH)).length + 1 // We _add one non-file entry
       expect(cached.allKeys().length).toEqual(numExpectedKeys)
     })
   })
@@ -123,7 +123,7 @@ describe('Cached', () => {
       it('should cache stream', async () => {
         const cache = await getCache(cachePath)
 
-        await cache.set('key', await fs.readFile(path.join(FIXTURE_PATH, 'string')))
+        await cache.set('key', await fs.readFile(getResource('string')))
 
         const buffer = await cache.get('key')
         expect(buffer.toString()).toEqual('foo\n')
@@ -182,12 +182,16 @@ const getCache = async (cachePath, {preload} = {}) => {
 
   const cache = new Cached(cachePath)
   if (preload) {
-    const files = await fs.readdir(FIXTURE_PATH)
+    const files = await fs.readdir(RESOURCE_PATH)
     const promises = files.map(async filename => {
-      return cache._add(filename, await fs.readFile(path.join(FIXTURE_PATH, filename)))
+      return cache._add(filename, await fs.readFile(getResource(filename)))
     })
     promises.push(cache._add('null', null))
     await Promise.all(promises)
   }
   return cache
+}
+
+const getResource = filename => {
+  return path.join(RESOURCE_PATH, filename)
 }
