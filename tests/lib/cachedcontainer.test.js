@@ -22,10 +22,9 @@ describe('CachedHtmlContainer', () => {
   })
 
   afterEach(() => {
-    Cached.mockClear()
-    HtmlGetter.mockClear()
-    nock.cleanAll()
+    jest.clearAllMocks()
     jest.clearAllTimers()
+    nock.cleanAll()
   })
 
   afterAll(() => nock.enableNetConnect())
