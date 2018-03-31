@@ -37,4 +37,16 @@ describe('copyDataToDir', () => {
   }
 })
 
+describe('getRecipe', () => {
+  it('should return GitHub scraper', () => {
+    const module = fileutils.getRecipe('github')
+    expect(module.initialize).toBeDefined()
+    expect(module.scrape).toBeDefined()
+  })
+})
 
+describe('getRecipeNames', () => {
+  it('should return files in recipes folder', () => {
+    expect(fileutils.getRecipeNames()).toEqual(['github'])
+  })
+})
