@@ -5,7 +5,9 @@
   "main": "lib/index.js",
   "scripts": {
     "clean": "rm -rf coverage/ tmp/",
-    "test": "jest --no-cache"
+    "lint": "standard --fix",
+    "start": "node bin/cli.js",
+    "test": "jest --no-cache --silent && standard"
   },
   "author": "Jon Lauridsen <mail@jonlauridsen.com>",
   "license": "ISC",
@@ -18,11 +20,13 @@
     "lowdb": "^1.0.0",
     "request": "^2.85.0",
     "request-promise-native": "^1.0.5",
-    "url-join": "^4.0.0"
+    "url-join": "^4.0.0",
+    "yargs": "^11.0.0"
   },
   "devDependencies": {
     "jest": "^22.4.3",
     "nock": "^9.2.3",
+    "standard": "^11.0.1",
     "tmp-promise": "^1.0.4"
   },
   "jest": {
