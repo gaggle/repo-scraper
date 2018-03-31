@@ -9,6 +9,10 @@ describe('filenameify', () => {
     expect(sanitizer.filenameify('!@£$%^&*()_+á')).toEqual('_____________')
   })
 
+  it('should preserve dots', () => {
+    expect(sanitizer.filenameify('foo.bar')).toEqual('foo.bar')
+  })
+
   it('should do nothing to a valid string', () => {
     expect(sanitizer.filenameify('foo')).toEqual('foo')
   })
