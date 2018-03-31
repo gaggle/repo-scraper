@@ -7,6 +7,7 @@ const path = require('path')
 const objContaining = expect.objectContaining
 
 const Container = require('../../lib/cachedcontainer')
+const errors = require('../../lib/errors')
 const recipe = require('../../recipes/github')
 
 const userReposData = require('../fixtures/github/api.github.com/user/repos/index.json')
@@ -25,7 +26,7 @@ describe('initialize', () => {
   afterEach(() => { process.env = oldEnv })
 
   it('should raise error w. missing env. variable', async () => {
-    await expect(recipe.initialize()).rejects.toBeInstanceOf(Error)
+    await expect(recipe.initialize()).rejects.toBeInstanceOf(errors.InitializeError)
   })
 
   it('should pass w. GH_TOKEN specified', async () => {

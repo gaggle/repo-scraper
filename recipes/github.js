@@ -4,11 +4,12 @@ const sizeOf = require('image-size')
 const url = require('url')
 const urljoin = require('url-join')
 
+const errors = require('../lib/errors')
 const htmlParser = require('../lib/html-parsing')
 const sanitizer = require('../lib/sanitizer')
 
 exports.initialize = async () => {
-  if (!process.env.GH_TOKEN) { throw new Error('Must specify GH_TOKEN environment variable') }
+  if (!process.env.GH_TOKEN) { throw new errors.InitializeError('Must specify GH_TOKEN environment variable') }
 }
 
 exports.scrape = async container => {

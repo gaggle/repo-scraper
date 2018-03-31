@@ -51,15 +51,6 @@ describe('main', () => {
     expect(recipe.scrape).toHaveBeenCalledWith(CachedContainer.mock.instances[0])
   })
 
-  it('should exit if scrape initialize fails', async () => {
-    recipe.initialize.mockImplementationOnce(async () => { throw new Error('Stop!') })
-
-    await main()
-
-    expect(recipe.initialize).toHaveBeenCalledTimes(1)
-    expect(process.exit).toHaveBeenCalledTimes(1)
-  })
-
   it('should save container data', async () => {
     CachedContainer.mockImplementationOnce(() => ({data: {foo: 'bar'}}))
     const filepath = path.join(tmpPath, 'custom-data.json')
