@@ -1,1 +1,1 @@
-# repo-scraper [![Build Status](https://travis-ci.org/gaggle/repo-scraper.svg?branch=master)](https://travis-ci.org/gaggle/repo-scraper)
+# repo-scraper [![Build Status](https://travis-ci.org/gaggle/repo-scraper.svg?branch=master)](https://travis-ci.org/gaggle/repo-scraper) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
