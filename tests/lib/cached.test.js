@@ -1,3 +1,4 @@
+/* global describe, it, beforeEach, afterEach, expect */
 const fs = require('fs-extra')
 const path = require('path')
 const tmp = require('tmp-promise')
@@ -80,7 +81,6 @@ describe('Cached', () => {
   })
 
   describe('#pop', () => {
-
     it('should return entry cached entry', async () => {
       const cache = await getCache(cachePath)
       await cache.set('foo', 'bar')

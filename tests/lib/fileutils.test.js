@@ -1,3 +1,4 @@
+/* global describe, it, beforeEach, afterEach, expect */
 const fs = require('fs-extra')
 const path = require('path')
 const tmp = require('tmp-promise')
@@ -15,13 +16,13 @@ describe('copyDataToDir', () => {
   afterEach(async () => fs.remove(tmpPath))
 
   it('should create specified file', async () => {
-    await fileutils.copyDataToDir(tmpPath, {'foo.txt': new Buffer('content')})
+    await fileutils.copyDataToDir(tmpPath, {'foo.txt': Buffer.from('content')})
 
     expect(await contentsOfTmpDir()).toEqual(['foo.txt'])
   })
 
   it('should write content to file', async () => {
-    await fileutils.copyDataToDir(tmpPath, {'foo.txt': new Buffer('content')})
+    await fileutils.copyDataToDir(tmpPath, {'foo.txt': Buffer.from('content')})
 
     expect(await contentsOfTmpFile('foo.txt')).toEqual('content')
   })

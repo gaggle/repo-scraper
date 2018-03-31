@@ -1,3 +1,4 @@
+/* global jest, describe, it, beforeAll, beforeEach, afterEach, afterAll, expect */
 const nock = require('nock')
 
 const Cached = require('../../lib/cached')
@@ -116,7 +117,7 @@ describe('CachedHtmlContainer', () => {
       })
 
       it('should not cache if request fails', async () => {
-        getter.makeRequest.mockImplementationOnce(async () => {throw new Error('Stop!')})
+        getter.makeRequest.mockImplementationOnce(async () => { throw new Error('Stop!') })
 
         try {
           await container.request('key')
@@ -128,7 +129,6 @@ describe('CachedHtmlContainer', () => {
   })
 
   describe('#safeRequest', () => {
-
     it('should return value from cache as normal', async () => {
       cache.get.mockImplementationOnce(async () => 'foo')
 

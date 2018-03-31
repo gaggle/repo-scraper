@@ -1,3 +1,4 @@
+/* global jest, describe, it, beforeEach, afterEach, expect */
 const fs = require('fs-extra')
 const lo = require('lodash')
 const path = require('path')
@@ -14,7 +15,7 @@ jest.mock('../../lib/cachedcontainer')
 jest.mock('../../lib/fileutils')
 jest.mock('../../recipes/github', () => ({
   initialize: jest.fn(),
-  scrape: jest.fn(),
+  scrape: jest.fn()
 }))
 
 describe('main', () => {
@@ -48,7 +49,7 @@ describe('main', () => {
   })
 
   it('should exit if scrape initialize fails', async () => {
-    recipe.initialize.mockImplementationOnce(async () => {throw new Error('Stop!')})
+    recipe.initialize.mockImplementationOnce(async () => { throw new Error('Stop!') })
 
     await main()
 
@@ -68,7 +69,7 @@ describe('main', () => {
 
   it('should save container static files to outfolder', async () => {
     const outfolder = path.join(tmpPath, 'custom-static/')
-    const staticFiles = {'foo.txt': new Buffer('content')}
+    const staticFiles = {'foo.txt': Buffer.from('content')}
     CachedContainer.mockImplementationOnce(() => ({staticFiles: staticFiles}))
 
     await main({outfolder: outfolder})
@@ -81,7 +82,7 @@ describe('main', () => {
       cache: path.join(tmpPath, 'cache/'),
       outfile: path.join(tmpPath, 'data.json'),
       outfolder: path.join(tmpPath, 'static/'),
-      recipe: 'github',
+      recipe: 'github'
     }, opts))
   }
 

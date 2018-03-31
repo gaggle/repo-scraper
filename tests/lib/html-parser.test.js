@@ -1,3 +1,4 @@
+/* global describe, it, expect */
 const htmlParser = require('../../lib/html-parsing')
 
 describe('parseImages', () => {
@@ -30,7 +31,7 @@ describe('parseImages', () => {
     const emptyEntry = {
       canonical_src: undefined,
       href: undefined,
-      src: undefined,
+      src: undefined
     }
 
     const images = await htmlParser.parseImages('<img/><a><img/></a><foo><img/></foo>')

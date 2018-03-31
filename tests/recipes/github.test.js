@@ -1,3 +1,4 @@
+/* global jest, describe, it, beforeEach, afterEach, expect */
 const fs = require('fs')
 const HtmlDom = require('htmldom')
 const lo = require('lodash')
@@ -12,16 +13,16 @@ const userReposData = require('../fixtures/github/api.github.com/user/repos/inde
 
 jest.mock('../../lib/cachedcontainer', () => jest.fn().mockImplementation(() => ({
   addStaticFile: jest.fn(),
-  safeRequest: jest.fn().mockResolvedValue(new Buffer('')),
-  setRepoData: jest.fn(),
+  safeRequest: jest.fn().mockResolvedValue(Buffer.from('')),
+  setRepoData: jest.fn()
 })))
 
 describe('initialize', () => {
-  const old_env = process.env
+  const oldEnv = process.env
 
-  beforeEach(() => process.env = {...old_env})
+  beforeEach(() => { process.env = {...oldEnv} })
 
-  afterEach(() => process.env = old_env)
+  afterEach(() => { process.env = oldEnv })
 
   it('should raise error w. missing env. variable', async () => {
     await expect(recipe.initialize()).rejects.toBeInstanceOf(Error)
@@ -34,7 +35,7 @@ describe('initialize', () => {
 })
 
 describe('scrape', () => {
-  const old_env = process.env
+  const oldEnv = process.env
   let container
   let userRepo
 
@@ -47,10 +48,10 @@ describe('scrape', () => {
     })
     userRepo = getUserRepo()
 
-    process.env = {...old_env}
+    process.env = {...oldEnv}
   })
 
-  afterEach(() => process.env = old_env)
+  afterEach(() => { process.env = oldEnv })
 
   const expectMockDataToEqual = ideal => expect(container.mockData[userRepo.full_name]).toEqual(ideal)
 
@@ -73,7 +74,7 @@ describe('scrape', () => {
       owner_html_url: 'https://github.com/user',
       owner_name: 'user',
       repo_html_url: 'https://github.com/user/name',
-      repo_name: 'name',
+      repo_name: 'name'
     }))
   })
 
@@ -84,7 +85,7 @@ describe('scrape', () => {
 
     expectMockDataToEqual(objContaining({
       open_issues: 0,
-      open_issues_html_url: 'https://github.com/user/name/issues',
+      open_issues_html_url: 'https://github.com/user/name/issues'
     }))
   })
 
@@ -95,7 +96,7 @@ describe('scrape', () => {
 
     expectMockDataToEqual(objContaining({
       open_pullrequests: 0,
-      open_pullrequests_html_url: 'https://github.com/user/name/pulls',
+      open_pullrequests_html_url: 'https://github.com/user/name/pulls'
     }))
   })
 
@@ -235,7 +236,7 @@ describe('scrape', () => {
       container.safeRequest
         .mockReturnValueOnce(getUserReposResponse())
         .mockReturnValueOnce(getReadme('foo', [{src: 'corrupt.png'}]))
-        .mockReturnValueOnce(new Buffer('corrupted image'))
+        .mockReturnValueOnce(Buffer.from('corrupted image'))
 
       await recipe.scrape(container)
 
@@ -303,7 +304,7 @@ const getReadme = (content, imgEntries = []) => {
 }
 const getUserRepo = () => userReposData[0]
 
-const getUserReposResponse = () => new Buffer(JSON.stringify(userReposData))
+const getUserReposResponse = () => Buffer.from(JSON.stringify(userReposData))
 
 const htmlify = s => {
   const html = new HtmlDom(s)
@@ -313,4 +314,3 @@ const htmlify = s => {
 const readResourceFile = filename => {
   return fs.readFileSync(path.resolve(__dirname, `../fixtures/resource-files/${filename}`))
 }
-

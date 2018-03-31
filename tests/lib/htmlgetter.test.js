@@ -1,3 +1,4 @@
+/* global describe, it, beforeAll, beforeEach, afterEach, afterAll, expect */
 const nock = require('nock')
 
 const HtmlGetter = require('../../lib/htmlgetter')
@@ -6,7 +7,7 @@ describe('HtmlGetter', () => {
   let htmlGetter
 
   beforeAll(() => nock.disableNetConnect())
-  beforeEach(() => htmlGetter = new HtmlGetter())
+  beforeEach(() => { htmlGetter = new HtmlGetter() })
   afterEach(() => nock.cleanAll())
   afterAll(() => nock.enableNetConnect())
 
@@ -29,7 +30,7 @@ describe('HtmlGetter', () => {
   it('should set User-Agent', async () => {
     const ctx = nock('http://foo.com', {
       reqheaders: {
-        'user-agent': 'repo-scraper',
+        'user-agent': 'repo-scraper'
       }
     }).get('/').reply(200)
 
@@ -41,7 +42,7 @@ describe('HtmlGetter', () => {
   it('should return buffer (so as not to mess up binary files)', async () => {
     const ctx = nock('http://foo.com')
       .get('/')
-      .reply(200, () => new Buffer('foo'))
+      .reply(200, () => Buffer.from('foo'))
 
     const buffer = await htmlGetter.makeRequest('http://foo.com')
     ctx.done()

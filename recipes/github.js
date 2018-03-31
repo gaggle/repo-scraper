@@ -8,8 +8,7 @@ const htmlParser = require('../lib/html-parsing')
 const sanitizer = require('../lib/sanitizer')
 
 exports.initialize = async () => {
-  if (!process.env.GH_TOKEN)
-    throw new Error('Must specify GH_TOKEN environment variable')
+  if (!process.env.GH_TOKEN) { throw new Error('Must specify GH_TOKEN environment variable') }
 }
 
 exports.scrape = async container => {
@@ -52,7 +51,7 @@ exports.scrape = async container => {
         canonical_src: parsedEl.canonical_src || downloadUri.href,
         href: parsedEl.href,
         size: size,
-        src: filepath,
+        src: filepath
       }
     })))
   }
@@ -103,7 +102,7 @@ exports.scrape = async container => {
       owner_name: el.owner.login,
       readme_html: readmeHtml,
       repo_html_url: el.html_url,
-      repo_name: el.name,
+      repo_name: el.name
     })
   }))
 }

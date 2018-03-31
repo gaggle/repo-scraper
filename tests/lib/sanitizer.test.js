@@ -1,3 +1,4 @@
+/* global describe, it, expect */
 const sanitizer = require('../../lib/sanitizer')
 
 describe('filenameify', () => {
