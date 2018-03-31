@@ -10,15 +10,11 @@ const recipe = require('../../recipes/github')
 
 const userReposData = require('../fixtures/github/api.github.com/user/repos/index.json')
 
-jest.mock('../../lib/cachedcontainer', () => {
-  return jest.fn().mockImplementation(() => {
-    return {
-      addStaticFile: jest.fn(),
-      safeRequest: jest.fn().mockResolvedValue(new Buffer('')),
-      setRepoData: jest.fn(),
-    }
-  })
-})
+jest.mock('../../lib/cachedcontainer', () => jest.fn().mockImplementation(() => ({
+  addStaticFile: jest.fn(),
+  safeRequest: jest.fn().mockResolvedValue(new Buffer('')),
+  setRepoData: jest.fn(),
+})))
 
 describe('initialize', () => {
   const old_env = process.env
