@@ -26,7 +26,6 @@ describe('main', () => {
   beforeEach(async () => {
     const o = await tmp.dir()
     tmpPath = o.path
-    global.process.exit = jest.fn()
     fileutils.getRecipe.mockImplementation(() => recipe)
   })
 
