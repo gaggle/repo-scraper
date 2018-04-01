@@ -46,23 +46,25 @@ describe('HtmlGetter', () => {
         .reply(200, () => Buffer.from('foo'))
 
       const buffer = await htmlGetter.makeRequest('http://foo.com')
+
       ctx.done()
       expect(buffer).toBeInstanceOf(Buffer)
       expect(buffer.toString()).toEqual('foo')
     })
 
     it('should raise an error on timeout', async (done) => {
-      nock('http://foo.com')
+      const ctx = nock('http://foo.com')
         .get('/')
         .delay(2000)
         .reply(200, 'foo')
-
       htmlGetter = new HtmlGetter({timeout: 1})
+
       try {
         await htmlGetter.makeRequest('http://foo.com')
         done.fail()
       } catch (err) {
         expect(err.message).toEqual(expect.stringMatching(/ESOCKETTIMEDOUT/))
+        ctx.done()
         done()
       }
     })
