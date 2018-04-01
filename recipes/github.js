@@ -82,7 +82,7 @@ exports.scrape = async container => {
 
   await Promise.all(await reposInfo.map(async el => {
     const readmeHtml = await textRequest(`readme: ${el.full_name}`, {
-      url: `https://api.github.com/repos/${el.full_name}/contents/README.md?ref=master`,
+      url: `https://api.github.com/repos/${el.full_name}/readme`,
       headers: {
         Accept: 'application/vnd.github.v3.html',
         Authorization: `Token ${process.env.GH_TOKEN}`
