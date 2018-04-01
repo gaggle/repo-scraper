@@ -9,6 +9,7 @@ const objContaining = expect.objectContaining
 const Container = require('../../lib/cachedcontainer')
 const errors = require('../../lib/errors')
 const recipe = require('../../recipes/github')
+const sanitizer = require('../../lib/sanitizer')
 
 const userReposData = require('../fixtures/github/api.github.com/user/repos/index.json')
 
@@ -155,15 +156,19 @@ describe('scrape', () => {
       expectMockDataToEqual(objContaining({badges: [objContaining({src: 'user/name/path/some-file.png'})]}))
     })
 
-    it('should have absolute src as filenamified src', async () => {
+    it('should have absolute src as hashified src', async () => {
       container.safeRequest
         .mockReturnValueOnce(getUserReposResponse())
-        .mockReturnValueOnce(getReadme('foo', [{src: 'http://foo/some-file.png'}]))
+        .mockReturnValueOnce(getReadme('foo', [{src: 'http://foo/some-file'}]))
         .mockReturnValueOnce(readResourceFile('png.16x16.png'))
 
       await recipe.scrape(container)
 
-      expectMockDataToEqual(objContaining({badges: [objContaining({src: 'user/name/http___foo_some_file.png'})]}))
+      expectMockDataToEqual(objContaining({
+        badges: [objContaining({
+          src: `user/name/${sanitizer.hashify('http://foo/some-file')}.png`
+        })]
+      }))
     })
 
     it('should have canonical src pointing to original url', async () => {

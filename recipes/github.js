@@ -38,14 +38,16 @@ exports.scrape = async container => {
 
       let filepath
       if (srcUri.host) {
-        const filename = sanitizer.filenameify(srcUri.href)
+        const filename = sanitizer.hashify(srcUri.href)
         filepath = path.join(repoEl.full_name, filename)
       } else {
         filepath = path.join(repoEl.full_name, srcUri.pathname)
       }
-      if (!path.extname(filepath)) {
+
+      if (path.extname(filepath).indexOf(size.type) === -1) {
         filepath = `${filepath}.${size.type}`
       }
+
       await container.addStaticFile(filepath, resource)
 
       return {
