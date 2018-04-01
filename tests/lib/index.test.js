@@ -7,12 +7,14 @@ const tmp = require('tmp-promise')
 const Cached = require('../../lib/cached')
 const CachedContainer = require('../../lib/cachedcontainer')
 const fileutils = require('../../lib/fileutils')
+const HtmlGetter = require('../../lib/htmlgetter')
 const index = require('../../lib/index')
 const recipe = require('../../recipes/github')
 
 jest.mock('../../lib/cached')
 jest.mock('../../lib/cachedcontainer')
 jest.mock('../../lib/fileutils')
+jest.mock('../../lib/htmlgetter')
 jest.mock('../../recipes/github', () => ({
   initialize: jest.fn(),
   scrape: jest.fn()
@@ -37,6 +39,7 @@ describe('main', () => {
     await main()
 
     expect(Cached).toHaveBeenCalledTimes(1)
+    expect(HtmlGetter).toHaveBeenCalledTimes(1)
     expect(CachedContainer).toHaveBeenCalledTimes(1)
   })
 
