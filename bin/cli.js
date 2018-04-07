@@ -10,12 +10,6 @@ const argv = require('yargs')
       type: 'string'
     })
     yargs.option('o', {
-      alias: 'outfile',
-      default: scraper.defaultOptions.outfile,
-      describe: 'File to save scraped data to',
-      type: 'string'
-    })
-    yargs.option('f', {
       alias: 'outfolder',
       default: scraper.defaultOptions.outfolder,
       describe: 'Folder to save static files to',
@@ -33,7 +27,6 @@ const argv = require('yargs')
 
 scraper.main({
   cache: argv.cache,
-  outfile: argv.outfile,
   outfolder: argv.outfolder,
   recipe: argv.recipe
 })

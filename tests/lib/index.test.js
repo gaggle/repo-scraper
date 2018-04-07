@@ -51,10 +51,11 @@ describe('main', () => {
   })
 
   it('should save container data', async () => {
+    const outfolder = path.join(tmpPath, 'custom-static/')
+    const filepath = path.join(outfolder, 'data.json')
     CachedContainer.mockImplementationOnce(() => ({data: {foo: 'bar'}}))
-    const filepath = path.join(tmpPath, 'custom-data.json')
 
-    await main({outfile: filepath})
+    await main({outfolder: outfolder})
 
     const ideal = JSON.stringify({foo: 'bar'}, null, 2)
     expect(await contentsOfFile(filepath)).toEqual(ideal)
@@ -73,7 +74,6 @@ describe('main', () => {
   const main = opts => {
     return index.main(lo.merge({
       cache: path.join(tmpPath, 'cache/'),
-      outfile: path.join(tmpPath, 'data.json'),
       outfolder: path.join(tmpPath, 'static/'),
       recipe: 'github'
     }, opts))

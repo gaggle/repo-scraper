@@ -14,7 +14,6 @@ describe('cli', () => {
 
     scraper.defaultOptions = {
       cache: 'cache/',
-      outfile: 'data.json',
       outfolder: 'static/',
       recipe: undefined
     }
@@ -41,6 +40,22 @@ describe('cli', () => {
     })
   })
 
+  it('should call main w. arguments', done => {
+    setArgv('github')
+    scraper.main.mockImplementationOnce(async () => {})
+
+    require('../../bin/cli')
+
+    process.nextTick(() => {
+      expect(scraper.main).toHaveBeenCalledWith({
+        cache: scraper.defaultOptions.cache,
+        outfolder: scraper.defaultOptions.outfolder,
+        recipe: 'github'
+      })
+      done()
+    })
+  })
+
   it('should exit 0 w. valid arguments', done => {
     setArgv('github')
     scraper.main.mockImplementationOnce(async () => {})
@@ -49,6 +64,11 @@ describe('cli', () => {
 
     process.nextTick(() => {
       expect(scraper.main).toHaveBeenCalledTimes(1)
+      expect(scraper.main).toHaveBeenCalledWith({
+        cache: scraper.defaultOptions.cache,
+        outfolder: scraper.defaultOptions.outfolder,
+        recipe: 'github'
+      })
       expect(process.exit).not.toHaveBeenCalled()
       done()
     })
