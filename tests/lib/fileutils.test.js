@@ -48,6 +48,6 @@ describe('getRecipe', () => {
 
 describe('getRecipeNames', () => {
   it('should return files in recipes folder', () => {
-    expect(fileutils.getRecipeNames()).toEqual(['github'])
+    expect(fileutils.getRecipeNames()).toEqual(['github', 'gitlab'])
   })
 })

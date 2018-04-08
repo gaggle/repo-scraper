@@ -1,0 +1,77 @@
+[
+  {
+    "id": 2001,
+    "description": "This is a description",
+    "name": "playground",
+    "name_with_namespace": "Jon Lauridsen / playground",
+    "path": "playground",
+    "path_with_namespace": "gaggle/playground",
+    "created_at": "2013-02-02T01:04:24.000Z",
+    "default_branch": "master",
+    "tag_list": [],
+    "ssh_url_to_repo": "git@gitlab.com:gaggle/playground.git",
+    "http_url_to_repo": "https://gitlab.com/gaggle/playground.git",
+    "web_url": "https://gitlab.com/gaggle/playground",
+    "readme_url": "https://gitlab.com/gaggle/playground/blob/master/README.md",
+    "avatar_url": null,
+    "star_count": 0,
+    "forks_count": 0,
+    "last_activity_at": "2019-01-02T19:27:49.562Z",
+    "namespace": {
+      "id": 2021,
+      "name": "gaggle",
+      "path": "gaggle",
+      "kind": "user",
+      "full_path": "gaggle",
+      "parent_id": null
+    },
+    "_links": {
+      "self": "https://gitlab.com/api/v4/projects/2001",
+      "issues": "https://gitlab.com/api/v4/projects/2001/issues",
+      "merge_requests": "https://gitlab.com/api/v4/projects/2001/merge_requests",
+      "repo_branches": "https://gitlab.com/api/v4/projects/2001/repository/branches",
+      "labels": "https://gitlab.com/api/v4/projects/2001/labels",
+      "events": "https://gitlab.com/api/v4/projects/2001/events",
+      "members": "https://gitlab.com/api/v4/projects/2001/members"
+    },
+    "archived": false,
+    "visibility": "private",
+    "owner": {
+      "id": 2217,
+      "name": "Jon Lauridsen",
+      "username": "gaggle",
+      "state": "active",
+      "avatar_url": "https://secure.gravatar.com/avatar/d92ea202a1c0ed94d48f3a1a56eb613c?s=80&d=identicon",
+      "web_url": "https://gitlab.com/gaggle"
+    },
+    "resolve_outdated_diff_discussions": null,
+    "container_registry_enabled": null,
+    "issues_enabled": true,
+    "merge_requests_enabled": true,
+    "wiki_enabled": true,
+    "jobs_enabled": true,
+    "snippets_enabled": false,
+    "shared_runners_enabled": true,
+    "lfs_enabled": true,
+    "creator_id": 2217,
+    "import_status": "none",
+    "open_issues_count": 0,
+    "public_jobs": true,
+    "ci_config_path": null,
+    "shared_with_groups": [],
+    "only_allow_merge_if_pipeline_succeeds": false,
+    "request_access_enabled": true,
+    "only_allow_merge_if_all_discussions_are_resolved": null,
+    "printing_merge_request_link_enabled": true,
+    "merge_method": "merge",
+    "permissions": {
+      "project_access": {
+        "access_level": 40,
+        "notification_level": 3
+      },
+      "group_access": null
+    },
+    "mirror": false,
+    "external_authorization_classification_label": ""
+  }
+]
