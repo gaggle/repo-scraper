@@ -57,6 +57,12 @@ Promise.resolve(informUserStart(argv))
       console.error(`Cannot start, got error: ${err.message}`)
       process.exit(2)
     } else {
+      if (err.response) {
+        const response = err.response.toJSON()
+        response.body = response.body.toString()
+        console.error(response)
+        err.response = null
+      }
       console.trace(err)
       process.exit(3)
     }
