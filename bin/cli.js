@@ -16,9 +16,9 @@ const argv = require('yargs')
       type: 'string'
     })
     yargs.option('c', {
-      alias: 'cache',
-      default: scraper.defaultOptions.cache,
-      describe: 'Folder to use for caching',
+      alias: 'cachefolder',
+      default: scraper.defaultOptions.cachefolder,
+      describe: 'Debug flag to set caching folder, defaults to temp. dir',
       type: 'string'
     })
   })
@@ -26,7 +26,7 @@ const argv = require('yargs')
   .argv
 
 scraper.main({
-  cache: argv.cache,
+  cachefolder: argv.cachefolder,
   outfolder: argv.outfolder,
   recipe: argv.recipe
 })

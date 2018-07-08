@@ -13,7 +13,7 @@ describe('cli', () => {
     }))
 
     scraper.defaultOptions = {
-      cache: 'cache/',
+      cachefolder: 'cachefolder/',
       outfolder: 'static/',
       recipe: undefined
     }
@@ -48,7 +48,7 @@ describe('cli', () => {
 
     process.nextTick(() => {
       expect(scraper.main).toHaveBeenCalledWith({
-        cache: scraper.defaultOptions.cache,
+        cachefolder: scraper.defaultOptions.cachefolder,
         outfolder: scraper.defaultOptions.outfolder,
         recipe: 'github'
       })
@@ -65,7 +65,7 @@ describe('cli', () => {
     process.nextTick(() => {
       expect(scraper.main).toHaveBeenCalledTimes(1)
       expect(scraper.main).toHaveBeenCalledWith({
-        cache: scraper.defaultOptions.cache,
+        cachefolder: scraper.defaultOptions.cachefolder,
         outfolder: scraper.defaultOptions.outfolder,
         recipe: 'github'
       })

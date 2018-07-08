@@ -73,7 +73,7 @@ describe('main', () => {
 
   const main = opts => {
     return index.main(lo.merge({
-      cache: path.join(tmpPath, 'cache/'),
+      cachefolder: path.join(tmpPath, 'cache/'),
       outfolder: path.join(tmpPath, 'static/'),
       recipe: 'github'
     }, opts))
