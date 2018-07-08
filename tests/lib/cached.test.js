@@ -100,6 +100,15 @@ describe('Cached', () => {
       expect(result).toBeUndefined()
     })
 
+    it('should delete cached entry even if its null', async () => {
+      const cache = await getCache(cachePath)
+      await cache.set('foo', null)
+
+      await cache.pop('foo')
+
+      expect(await cache.has('foo')).toBe(false)
+    })
+
     it('should ignore unknown entry', async () => {
       const cache = await getCache(cachePath)
 
