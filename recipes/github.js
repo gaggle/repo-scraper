@@ -72,7 +72,7 @@ exports.scrape = async container => {
       Authorization: `Bearer ${process.env.GH_TOKEN}`
     }
   })
-    .catch(err => {throw new errors.InitializeError(`${err.statusCode} ${err.error.toString()}`)})
+    .catch(err => { throw new errors.InitializeError(`${err.statusCode} ${err.error.toString()}`) })
 
   let reposInfo = JSON.parse(await reposInfoRequest)
 
