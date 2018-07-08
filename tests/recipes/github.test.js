@@ -4,14 +4,14 @@ const HtmlDom = require('htmldom')
 const lo = require('lodash')
 const path = require('path')
 
-const objContaining = expect.objectContaining
-
 const Container = require('../../lib/cachedcontainer')
 const errors = require('../../lib/errors')
 const recipe = require('../../recipes/github')
 const sanitizer = require('../../lib/sanitizer')
 
 const userReposData200 = require('../fixtures/github/api.github.com/user/repos/200.index.json')
+
+const objContaining = expect.objectContaining
 
 jest.mock('../../lib/cachedcontainer', () => jest.fn().mockImplementation(() => ({
   addStaticFile: jest.fn(),
