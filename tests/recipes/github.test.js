@@ -11,7 +11,7 @@ const errors = require('../../lib/errors')
 const recipe = require('../../recipes/github')
 const sanitizer = require('../../lib/sanitizer')
 
-const userReposData = require('../fixtures/github/api.github.com/user/repos/index.json')
+const userReposData200 = require('../fixtures/github/api.github.com/user/repos/200.index.json')
 
 jest.mock('../../lib/cachedcontainer', () => jest.fn().mockImplementation(() => ({
   addStaticFile: jest.fn(),
@@ -308,9 +308,10 @@ const getReadme = (content, imgEntries = []) => {
     </div>
   `)
 }
-const getUserRepo = () => userReposData[0]
+const getUserRepo = () => userReposData200[0]
 
-const getUserReposResponse = () => Buffer.from(JSON.stringify(userReposData))
+const getUserReposResponse = () => Buffer.from(JSON.stringify(userReposData200))
+
 
 const htmlify = s => {
   const html = new HtmlDom(s)
