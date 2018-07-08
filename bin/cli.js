@@ -1,7 +1,13 @@
 #!/usr/bin/env node
+const _prettyPath = require('../lib/pretty-path')
 const errors = require('../lib/errors')
 const fileutils = require('../lib/fileutils')
 const scraper = require('../lib/index')
+const {configureLog, getLogLevel, log} = require('../lib/log')
+
+const prettyPath = (...args) => {
+  return _prettyPath(...args, {alwaysAbsolute: log.getLevel() <= log.levels.DEBUG})
+}
 
 const argv = require('yargs')
   .usage('$0 <recipe>', 'Scrape repositories', yargs => {
@@ -15,6 +21,11 @@ const argv = require('yargs')
       describe: 'Folder to save static files to',
       type: 'string'
     })
+    yargs.option('v', {
+      alias: 'verbose',
+      count: true,
+      describe: 'Debug level count, corresponding to WARN, INFO, DEBUG, TRACE, SILENT'
+    })
     yargs.option('c', {
       alias: 'cachefolder',
       default: scraper.defaultOptions.cachefolder,
@@ -25,14 +36,22 @@ const argv = require('yargs')
   .strict(true)
   .argv
 
-scraper.main({
-  cachefolder: argv.cachefolder,
-  outfolder: argv.outfolder,
-  recipe: argv.recipe
-})
-  .then(() => {
-    return console.log('Done')
-  })
+const informUserStart = argv => {
+  if (log.getLevel() !== log.levels.SILENT) {
+    if (argv.verbose !== 0) console.log(`Log level ${getLogLevel()}`)
+    console.log(`Scraping using '${argv.recipe}' recipe to '${prettyPath(argv.outfolder)}'`)
+  }
+  log.debug(`Caching to '${prettyPath(argv.cachefolder)}'`)
+}
+
+configureLog(argv.verbose)
+Promise.resolve(informUserStart(argv))
+  .then(() => scraper.main({
+    cachefolder: argv.cachefolder,
+    outfolder: argv.outfolder,
+    recipe: argv.recipe
+  }))
+  .then(() => console.log('Done'))
   .catch(err => {
     if (err instanceof errors.InitializeError) {
       console.error(err.message)
