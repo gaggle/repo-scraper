@@ -81,7 +81,7 @@ describe('Cached', () => {
   })
 
   describe('#pop', () => {
-    it('should return entry cached entry', async () => {
+    it('should return cached entry', async () => {
       const cache = await getCache(cachePath)
       await cache.set('foo', 'bar')
 
@@ -97,7 +97,7 @@ describe('Cached', () => {
       await cache.pop('foo')
 
       const result = await cache.get('foo')
-      expect(result).toBe(undefined)
+      expect(result).toBeUndefined()
     })
 
     it('should ignore unknown entry', async () => {
