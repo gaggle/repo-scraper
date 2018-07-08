@@ -20,6 +20,9 @@ describe('cli', () => {
 
     global.process.argv = [process.execPath, __filename]
     global.process.exit = jest.fn()
+
+    this.errlog = ''
+    console['error'] = jest.fn(inputs => (this.errlog += inputs))
   })
 
   afterEach(async () => {
