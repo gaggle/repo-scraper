@@ -1,4 +1,6 @@
 /* global jest, describe, it, beforeEach, afterEach, expect */
+const {StatusCodeError} = require('request-promise-core/lib/errors.js')
+
 describe('cli', () => {
   let errors
   let scraper
@@ -21,6 +23,8 @@ describe('cli', () => {
     global.process.argv = [process.execPath, __filename]
     global.process.exit = jest.fn()
 
+    this.log = ''
+    console['log'] = jest.fn(inputs => (this.log += inputs))
     this.errlog = ''
     console['error'] = jest.fn(inputs => (this.errlog += inputs))
   })
@@ -55,6 +59,42 @@ describe('cli', () => {
         outfolder: scraper.defaultOptions.outfolder,
         recipe: 'github'
       })
+      done()
+    })
+  })
+
+  it('should log recipe name at default verbosity', done => {
+    setArgv('github', '-vvv')
+    scraper.main.mockImplementationOnce(async () => {})
+
+    require('../../bin/cli')
+
+    process.nextTick(() => {
+      expect(this.log).toContain("Scraping using 'github' recipe")
+      done()
+    })
+  })
+
+  it('should log recipe name when increasing verbosity', done => {
+    setArgv('github', '-vvvv')
+    scraper.main.mockImplementationOnce(async () => {})
+
+    require('../../bin/cli')
+
+    process.nextTick(() => {
+      expect(this.log).toContain("Scraping using 'github' recipe")
+      done()
+    })
+  })
+
+  it('should NOT log recipe name when increasing logging to silence', done => {
+    setArgv('github', '-vvvvv')
+    scraper.main.mockImplementationOnce(async () => {})
+
+    require('../../bin/cli')
+
+    process.nextTick(() => {
+      expect(this.log).not.toContain("Scraping using 'github' recipe")
       done()
     })
   })
@@ -104,7 +144,43 @@ describe('cli', () => {
       done()
     })
   })
+
+  it('should exit 3 on error that contains response details', done => {
+    setArgv('github')
+    const response = fakeResponse(500, 'Oh no')
+    scraper.main.mockImplementationOnce(() =>
+      Promise.reject(
+        new StatusCodeError(response.statusCode, 'Server error', {}, response)
+      ))
+
+    require('../../bin/cli')
+
+    process.nextTick(() => {
+      expect(scraper.main).toHaveBeenCalledTimes(1)
+      expect(process.exit).toHaveBeenCalledTimes(1)
+      expect(process.exit).toHaveBeenCalledWith(3)
+      done()
+    })
+  })
+
+  it('should print response details if error contains response details', done => {
+    setArgv('github')
+    const response = fakeResponse(500, 'Oh no')
+    scraper.main.mockImplementationOnce(() =>
+      Promise.reject(
+        new StatusCodeError(response.statusCode, 'Server error', {}, response)
+      ))
+
+    require('../../bin/cli')
+
+    process.nextTick(() => {
+      expect(this.errlog).toContain('Oh no')
+      done()
+    })
+  })
 })
+
+const fakeResponse = (status, body) => ({toJSON: () => ({body: Buffer.from(body), statusCode: status})})
 
 const setArgv = (...args) => {
   process.argv = [process.execPath, __filename, ...args]

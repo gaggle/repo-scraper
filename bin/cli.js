@@ -44,6 +44,22 @@ const informUserStart = argv => {
   log.debug(`Caching to '${prettyPath(argv.cachefolder)}'`)
 }
 
+const onError = err => {
+  if (err instanceof errors.InitializeError) {
+    console.error(`Cannot start, got error: ${err.message}`)
+    process.exit(2)
+  } else {
+    if (err.response) {
+      const response = err.response.toJSON()
+      response.body = response.body.toString()
+      console.error(JSON.stringify(response))
+      err.response = null
+    }
+    console.trace(err)
+    process.exit(3)
+  }
+}
+
 configureLog(argv.verbose)
 Promise.resolve(informUserStart(argv))
   .then(() => scraper.main({
@@ -52,18 +68,4 @@ Promise.resolve(informUserStart(argv))
     recipe: argv.recipe
   }))
   .then(() => console.log('Done'))
-  .catch(err => {
-    if (err instanceof errors.InitializeError) {
-      console.error(`Cannot start, got error: ${err.message}`)
-      process.exit(2)
-    } else {
-      if (err.response) {
-        const response = err.response.toJSON()
-        response.body = response.body.toString()
-        console.error(response)
-        err.response = null
-      }
-      console.trace(err)
-      process.exit(3)
-    }
-  })
+  .catch(onError)
