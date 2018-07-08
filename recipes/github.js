@@ -65,13 +65,16 @@ exports.scrape = async container => {
     return buffer ? buffer.toString() : buffer
   }
 
-  let reposInfo = JSON.parse(await textRequest('user_repos', {
+  const reposInfoRequest = textRequest('user_repos', {
     url: 'https://api.github.com/user/repos?per_page=100',
     headers: {
       Accept: 'application/vnd.github.v3+json',
       Authorization: `Bearer ${process.env.GH_TOKEN}`
     }
-  }))
+  })
+    .catch(err => {throw new errors.InitializeError(`${err.statusCode} ${err.error.toString()}`)})
+
+  let reposInfo = JSON.parse(await reposInfoRequest)
 
   log.info(`Found ${reposInfo.length} repos`)
 

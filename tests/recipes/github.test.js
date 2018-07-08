@@ -3,6 +3,7 @@ const fs = require('fs')
 const HtmlDom = require('htmldom')
 const lo = require('lodash')
 const path = require('path')
+const {StatusCodeError} = require('request-promise-core/lib/errors.js')
 
 const Container = require('../../lib/cachedcontainer')
 const errors = require('../../lib/errors')
@@ -10,6 +11,7 @@ const recipe = require('../../recipes/github')
 const sanitizer = require('../../lib/sanitizer')
 
 const userReposData200 = require('../fixtures/github/api.github.com/user/repos/200.index.json')
+const userReposData401 = require('../fixtures/github/api.github.com/user/repos/401.index.json')
 
 const objContaining = expect.objectContaining
 
@@ -291,6 +293,12 @@ describe('scrape', () => {
       expect(Object.keys(container.mockData).length).toEqual(0)
     })
   })
+
+  it('should raise InitializeError if repo list request reports 401', async () => {
+    container.safeRequest.mockImplementation(() => { throw new StatusCodeError(401, getUserRepos401Response()) })
+
+    expect(recipe.scrape(container)).rejects.toBeInstanceOf(errors.InitializeError)
+  })
 })
 
 const getReadme = (content, imgEntries = []) => {
@@ -312,6 +320,7 @@ const getUserRepo = () => userReposData200[0]
 
 const getUserReposResponse = () => Buffer.from(JSON.stringify(userReposData200))
 
+const getUserRepos401Response = () => Buffer.from(JSON.stringify(userReposData401))
 
 const htmlify = s => {
   const html = new HtmlDom(s)
