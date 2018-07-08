@@ -7,6 +7,7 @@ const urljoin = require('url-join')
 const errors = require('../lib/errors')
 const htmlParser = require('../lib/html-parsing')
 const sanitizer = require('../lib/sanitizer')
+const {log} = require('../lib/log')
 
 exports.initialize = async () => {
   if (!process.env.GH_TOKEN) { throw new errors.InitializeError('Must specify GH_TOKEN environment variable') }
@@ -71,6 +72,8 @@ exports.scrape = async container => {
       Authorization: `Bearer ${process.env.GH_TOKEN}`
     }
   }))
+
+  log.info(`Found ${reposInfo.length} repos`)
 
   /**
    * It's useful during dev to limit the repos being processed,
