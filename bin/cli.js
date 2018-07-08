@@ -54,7 +54,7 @@ Promise.resolve(informUserStart(argv))
   .then(() => console.log('Done'))
   .catch(err => {
     if (err instanceof errors.InitializeError) {
-      console.error(err.message)
+      console.error(`Cannot start, got error: ${err.message}`)
       process.exit(2)
     } else {
       console.trace(err)
