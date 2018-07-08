@@ -7,7 +7,7 @@
     "repo-scrape": "bin/cli.js"
   },
   "scripts": {
-    "clean": "rm -rf coverage/ tmp/",
+    "clean": "rm -rf .cache/ coverage/ static/ tmp/",
     "lint": "standard --fix",
     "start": "node bin/cli.js",
     "test": "jest --no-cache --silent && standard"
