@@ -5,14 +5,14 @@ const path = require('path')
 const tmp = require('tmp-promise')
 
 const Cached = require('../../lib/cached')
-const CachedContainer = require('../../lib/cachedcontainer')
+const CachedRequester = require('../../lib/cached-requester')
 const fileutils = require('../../lib/fileutils')
 const HtmlGetter = require('../../lib/htmlgetter')
 const index = require('../../lib/index')
 const recipe = require('../../recipes/github')
 
 jest.mock('../../lib/cached')
-jest.mock('../../lib/cachedcontainer')
+jest.mock('../../lib/cached-requester')
 jest.mock('../../lib/fileutils')
 jest.mock('../../lib/htmlgetter')
 jest.mock('../../recipes/github', () => ({
@@ -39,7 +39,7 @@ describe('main', () => {
 
     expect(Cached).toHaveBeenCalledTimes(1)
     expect(HtmlGetter).toHaveBeenCalledTimes(1)
-    expect(CachedContainer).toHaveBeenCalledTimes(1)
+    expect(CachedRequester).toHaveBeenCalledTimes(1)
   })
 
   it('should initialize and scrape parser', async () => {
@@ -47,13 +47,13 @@ describe('main', () => {
 
     expect(recipe.initialize).toHaveBeenCalledTimes(1)
     expect(recipe.scrape).toHaveBeenCalledTimes(1)
-    expect(recipe.scrape).toHaveBeenCalledWith(CachedContainer.mock.instances[0])
+    expect(recipe.scrape).toHaveBeenCalledWith(CachedRequester.mock.instances[0])
   })
 
   it('should save container data', async () => {
     const outfolder = path.join(tmpPath, 'custom-static/')
     const filepath = path.join(outfolder, 'data.json')
-    CachedContainer.mockImplementationOnce(() => ({data: {foo: 'bar'}}))
+    CachedRequester.mockImplementationOnce(() => ({data: {foo: 'bar'}}))
 
     await main({outfolder: outfolder})
 
@@ -64,7 +64,7 @@ describe('main', () => {
   it('should save container static files to outfolder', async () => {
     const outfolder = path.join(tmpPath, 'custom-static/')
     const staticFiles = {'foo.txt': Buffer.from('content')}
-    CachedContainer.mockImplementationOnce(() => ({staticFiles: staticFiles}))
+    CachedRequester.mockImplementationOnce(() => ({staticFiles: staticFiles}))
 
     await main({outfolder: outfolder})
 

@@ -2,7 +2,7 @@
 const nock = require('nock')
 
 const Cached = require('../../lib/cached')
-const Container = require('../../lib/cachedcontainer')
+const Container = require('../../lib/cached-requester')
 const HtmlGetter = require('../../lib/htmlgetter')
 
 jest.mock('../../lib/cached')

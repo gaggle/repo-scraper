@@ -5,7 +5,7 @@ const lo = require('lodash')
 const path = require('path')
 const {StatusCodeError} = require('request-promise-core/lib/errors.js')
 
-const Container = require('../../lib/cachedcontainer')
+const Container = require('../../lib/cached-requester')
 const errors = require('../../lib/errors')
 const recipe = require('../../recipes/github')
 const sanitizer = require('../../lib/sanitizer')
@@ -15,7 +15,7 @@ const userReposData401 = require('../fixtures/github/api.github.com/user/repos/4
 
 const objContaining = expect.objectContaining
 
-jest.mock('../../lib/cachedcontainer', () => jest.fn().mockImplementation(() => ({
+jest.mock('../../lib/cached-requester', () => jest.fn().mockImplementation(() => ({
   addStaticFile: jest.fn(),
   safeRequest: jest.fn().mockResolvedValue(Buffer.from('')),
   setRepoData: jest.fn()
