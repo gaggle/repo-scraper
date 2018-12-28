@@ -9,22 +9,22 @@ describe('parseImages', () => {
 
   it('should extract image src', async () => {
     const images = await htmlParser.parseImages('<img src="src"/>')
-    expect(images).toEqual([expect.objectContaining({src: 'src'})])
+    expect(images).toEqual([expect.objectContaining({ src: 'src' })])
   })
 
   it('should ignore non-link parent', async () => {
     const images = await htmlParser.parseImages('<foo href="href"><img src="src"/></foo>')
-    expect(images).not.toEqual([expect.objectContaining({href: 'href'})])
+    expect(images).not.toEqual([expect.objectContaining({ href: 'href' })])
   })
 
   it('should extract parent link href', async () => {
     const images = await htmlParser.parseImages('<a href="href"><img/></a>')
-    expect(images).toEqual([expect.objectContaining({href: 'href'})])
+    expect(images).toEqual([expect.objectContaining({ href: 'href' })])
   })
 
   it('should extract parent link canonical href', async () => {
     const images = await htmlParser.parseImages('<a><img data-canonical-src="foo"/></a>')
-    expect(images).toEqual([expect.objectContaining({canonical_src: 'foo'})])
+    expect(images).toEqual([expect.objectContaining({ canonical_src: 'foo' })])
   })
 
   it('should record attributes as undefined if they are not defined', async () => {

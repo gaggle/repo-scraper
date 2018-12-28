@@ -3,10 +3,10 @@ const _prettyPath = require('../lib/pretty-path')
 const errors = require('../lib/errors')
 const fileutils = require('../lib/fileutils')
 const scraper = require('../lib/index')
-const {configureLog, getLogLevel, log} = require('../lib/log')
+const { configureLog, getLogLevel, log } = require('../lib/log')
 
 const prettyPath = (...args) => {
-  return _prettyPath(...args, {alwaysAbsolute: log.getLevel() <= log.levels.DEBUG})
+  return _prettyPath(...args, { alwaysAbsolute: log.getLevel() <= log.levels.DEBUG })
 }
 
 const argv = require('yargs')

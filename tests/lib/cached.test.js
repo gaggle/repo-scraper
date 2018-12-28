@@ -26,7 +26,7 @@ describe('Cached', () => {
 
     it('should persist data for later initialisations', async () => {
       // This seeds the folder with data
-      await getCache(cachePath, {preload: true})
+      await getCache(cachePath, { preload: true })
 
       // then we grab a new instance to see if it comes with that data
       const cached = new Cached(cachePath)
@@ -44,7 +44,7 @@ describe('Cached', () => {
     })
 
     it('should get null entry as null', async () => {
-      const cache = await getCache(cachePath, {preload: true})
+      const cache = await getCache(cachePath, { preload: true })
 
       const entry = await cache.get('null')
 
@@ -52,7 +52,7 @@ describe('Cached', () => {
     })
 
     it('should get entry as buffer', async () => {
-      const cache = await getCache(cachePath, {preload: true})
+      const cache = await getCache(cachePath, { preload: true })
 
       const entry = await cache.get('string')
 
@@ -186,7 +186,7 @@ describe('Cached', () => {
   })
 })
 
-const getCache = async (cachePath, {preload} = {}) => {
+const getCache = async (cachePath, { preload } = {}) => {
   if (!cachePath) throw new Error('Missing cachePath')
 
   const cache = new Cached(cachePath)

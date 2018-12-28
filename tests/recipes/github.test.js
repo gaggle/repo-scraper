@@ -3,7 +3,7 @@ const fs = require('fs')
 const HtmlDom = require('htmldom')
 const lo = require('lodash')
 const path = require('path')
-const {StatusCodeError} = require('request-promise-core/lib/errors.js')
+const { StatusCodeError } = require('request-promise-core/lib/errors.js')
 
 const Container = require('../../lib/cached-requester')
 const errors = require('../../lib/errors')
@@ -24,7 +24,7 @@ jest.mock('../../lib/cached-requester', () => jest.fn().mockImplementation(() =>
 describe('initialize', () => {
   const oldEnv = process.env
 
-  beforeEach(() => { process.env = {...oldEnv} })
+  beforeEach(() => { process.env = { ...oldEnv } })
 
   afterEach(() => { process.env = oldEnv })
 
@@ -52,7 +52,7 @@ describe('scrape', () => {
     })
     userRepo = getUserRepo()
 
-    process.env = {...oldEnv}
+    process.env = { ...oldEnv }
   })
 
   afterEach(() => { process.env = oldEnv })
@@ -64,7 +64,7 @@ describe('scrape', () => {
 
     await recipe.scrape(container)
 
-    expectMockDataToEqual(objContaining({id: userRepo.full_name}))
+    expectMockDataToEqual(objContaining({ id: userRepo.full_name }))
   })
 
   it('should scrape basic repo information', async () => {
@@ -135,7 +135,7 @@ describe('scrape', () => {
 
     await recipe.scrape(container)
 
-    expectMockDataToEqual(objContaining({language: 'Shell'}))
+    expectMockDataToEqual(objContaining({ language: 'Shell' }))
   })
 
   it('should scrape language', async () => {
@@ -143,25 +143,25 @@ describe('scrape', () => {
 
     await recipe.scrape(container)
 
-    expectMockDataToEqual(objContaining({language: 'Shell'}))
+    expectMockDataToEqual(objContaining({ language: 'Shell' }))
   })
 
   describe('badges', () => {
     it('should have relative src as repo id + image path', async () => {
       container.safeRequest
         .mockReturnValueOnce(getUserReposResponse())
-        .mockReturnValueOnce(getReadme('foo', [{src: 'path/some-file.png'}]))
+        .mockReturnValueOnce(getReadme('foo', [{ src: 'path/some-file.png' }]))
         .mockReturnValueOnce(readResourceFile('png.16x16.png'))
 
       await recipe.scrape(container)
 
-      expectMockDataToEqual(objContaining({badges: [objContaining({src: 'user/name/path/some-file.png'})]}))
+      expectMockDataToEqual(objContaining({ badges: [objContaining({ src: 'user/name/path/some-file.png' })] }))
     })
 
     it('should have absolute src as hashified src', async () => {
       container.safeRequest
         .mockReturnValueOnce(getUserReposResponse())
-        .mockReturnValueOnce(getReadme('foo', [{src: 'http://foo/some-file'}]))
+        .mockReturnValueOnce(getReadme('foo', [{ src: 'http://foo/some-file' }]))
         .mockReturnValueOnce(readResourceFile('png.16x16.png'))
 
       await recipe.scrape(container)
@@ -176,7 +176,7 @@ describe('scrape', () => {
     it('should have canonical src pointing to original url', async () => {
       container.safeRequest
         .mockReturnValueOnce(getUserReposResponse())
-        .mockReturnValueOnce(getReadme('foo', [{src: 'path/some-file.png'}]))
+        .mockReturnValueOnce(getReadme('foo', [{ src: 'path/some-file.png' }]))
         .mockReturnValueOnce(readResourceFile('png.16x16.png'))
 
       await recipe.scrape(container)
@@ -191,14 +191,14 @@ describe('scrape', () => {
     it('should have size data', async () => {
       container.safeRequest
         .mockReturnValueOnce(getUserReposResponse())
-        .mockReturnValueOnce(getReadme('foo', [{src: 'path/some-file.png'}]))
+        .mockReturnValueOnce(getReadme('foo', [{ src: 'path/some-file.png' }]))
         .mockReturnValueOnce(readResourceFile('png.16x16.png'))
 
       await recipe.scrape(container)
 
       expectMockDataToEqual(objContaining({
         badges: [objContaining({
-          size: {width: 16, height: 16, type: 'png'}
+          size: { width: 16, height: 16, type: 'png' }
         })]
       }))
     })
@@ -206,7 +206,7 @@ describe('scrape', () => {
     it('should respect existing canonical src', async () => {
       container.safeRequest
         .mockReturnValueOnce(getUserReposResponse())
-        .mockReturnValueOnce(getReadme('foo', [{src: 'foo.png', canonical_src: 'http://a/canonical/path.png'}]))
+        .mockReturnValueOnce(getReadme('foo', [{ src: 'foo.png', canonical_src: 'http://a/canonical/path.png' }]))
         .mockReturnValueOnce(readResourceFile('png.16x16.png'))
 
       await recipe.scrape(container)
@@ -221,56 +221,56 @@ describe('scrape', () => {
     it('should scrape <a> href', async () => {
       container.safeRequest
         .mockReturnValueOnce(getUserReposResponse())
-        .mockReturnValueOnce(getReadme('foo', [{src: 'foo.png', href: 'http://a/link'}]))
+        .mockReturnValueOnce(getReadme('foo', [{ src: 'foo.png', href: 'http://a/link' }]))
         .mockReturnValueOnce(readResourceFile('png.16x16.png'))
 
       await recipe.scrape(container)
 
-      expectMockDataToEqual(objContaining({badges: [objContaining({href: 'http://a/link'})]}))
+      expectMockDataToEqual(objContaining({ badges: [objContaining({ href: 'http://a/link' })] }))
     })
 
     it('should cope with image failing to download', async () => {
       container.safeRequest
         .mockReturnValueOnce(getUserReposResponse())
-        .mockReturnValueOnce(getReadme('foo', [{src: 'doesnotexist.png'}]))
+        .mockReturnValueOnce(getReadme('foo', [{ src: 'doesnotexist.png' }]))
         .mockReturnValueOnce(null)
 
       await recipe.scrape(container)
 
-      expectMockDataToEqual(objContaining({badges: []}))
+      expectMockDataToEqual(objContaining({ badges: [] }))
     })
 
     it('should cope with corrupt image', async () => {
       container.safeRequest
         .mockReturnValueOnce(getUserReposResponse())
-        .mockReturnValueOnce(getReadme('foo', [{src: 'corrupt.png'}]))
+        .mockReturnValueOnce(getReadme('foo', [{ src: 'corrupt.png' }]))
         .mockReturnValueOnce(Buffer.from('corrupted image'))
 
       await recipe.scrape(container)
 
-      expectMockDataToEqual(objContaining({badges: []}))
+      expectMockDataToEqual(objContaining({ badges: [] }))
     })
 
     it('should ignore too large an image', async () => {
       container.safeRequest
         .mockReturnValueOnce(getUserReposResponse())
-        .mockReturnValueOnce(getReadme('foo', [{src: 'corrupt.png'}]))
+        .mockReturnValueOnce(getReadme('foo', [{ src: 'corrupt.png' }]))
         .mockReturnValueOnce(readResourceFile('png.512x512.png'))
 
       await recipe.scrape(container)
 
-      expectMockDataToEqual(objContaining({badges: []}))
+      expectMockDataToEqual(objContaining({ badges: [] }))
     })
 
     it('should add extension to src if image src lacks it', async () => {
       container.safeRequest
         .mockReturnValueOnce(getUserReposResponse())
-        .mockReturnValueOnce(getReadme('foo', [{src: 'path/without_ext'}]))
+        .mockReturnValueOnce(getReadme('foo', [{ src: 'path/without_ext' }]))
         .mockReturnValueOnce(readResourceFile('png.16x16.png'))
 
       await recipe.scrape(container)
 
-      expectMockDataToEqual(objContaining({badges: [objContaining({src: 'user/name/path/without_ext.png'})]}))
+      expectMockDataToEqual(objContaining({ badges: [objContaining({ src: 'user/name/path/without_ext.png' })] }))
     })
   })
 

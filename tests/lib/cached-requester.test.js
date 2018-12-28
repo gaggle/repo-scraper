@@ -19,7 +19,7 @@ describe('CachedHtmlContainer', () => {
     jest.useFakeTimers()
     cache = new Cached()
     getter = new HtmlGetter()
-    container = new Container({cache, requestGetter: getter})
+    container = new Container({ cache, requestGetter: getter })
   })
 
   afterEach(() => {
@@ -38,13 +38,13 @@ describe('CachedHtmlContainer', () => {
     })
 
     it('should accept injection of cache and getter', () => {
-      const c = new Container({cache: 'foo', requestGetter: 'bar'})
+      const c = new Container({ cache: 'foo', requestGetter: 'bar' })
       expect(c._cache).toEqual('foo')
       expect(c._reqgetter).toEqual('bar')
     })
 
     it('should set creation date in data store', () => {
-      const c = new Container({cache, getter})
+      const c = new Container({ cache, getter })
       expect(c.data.created_at).toBeInstanceOf(Date)
     })
   })
@@ -53,7 +53,7 @@ describe('CachedHtmlContainer', () => {
     it('should add entries to file store', async () => {
       await container.addStaticFile('foo', 'bar')
 
-      expect(container.staticFiles).toEqual({'foo': 'bar'})
+      expect(container.staticFiles).toEqual({ 'foo': 'bar' })
     })
   })
 
@@ -176,15 +176,15 @@ describe('CachedHtmlContainer', () => {
 
   describe('#setRepoData', () => {
     it('should set data for repo entry', () => {
-      container.setRepoData('foo', {ham: 'spam'})
+      container.setRepoData('foo', { ham: 'spam' })
 
-      expect(container.data.repos.foo).toEqual(expect.objectContaining({ham: 'spam'}))
+      expect(container.data.repos.foo).toEqual(expect.objectContaining({ ham: 'spam' }))
     })
 
     it('should specify badges as array by default', () => {
       container.setRepoData('foo')
 
-      expect(container.data.repos.foo).toEqual(expect.objectContaining({badges: []}))
+      expect(container.data.repos.foo).toEqual(expect.objectContaining({ badges: [] }))
     })
   })
 })
