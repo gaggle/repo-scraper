@@ -49,7 +49,7 @@ exports.scrape = async container => {
         filepath = `${filepath}.${size.type}`
       }
 
-      await container.addStaticFile(filepath, resource)
+      container.addStaticFile(filepath, resource)
 
       return {
         canonical_src: parsedEl.canonical_src || downloadUri.href,

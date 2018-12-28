@@ -45,15 +45,15 @@ describe('CachedHtmlContainer', () => {
 
     it('should set creation date in data store', () => {
       const c = new Container({ cache, getter })
-      expect(c.data.created_at).toBeInstanceOf(Date)
+      expect(c.getData().createdAt).toBeInstanceOf(Date)
     })
   })
 
   describe('#addStaticFiles', () => {
     it('should add entries to file store', async () => {
-      await container.addStaticFile('foo', 'bar')
+      container.addStaticFile('foo', 'bar')
 
-      expect(container.staticFiles).toEqual({ 'foo': 'bar' })
+      expect(container.getStaticFiles()).toEqual({ 'foo': 'bar' })
     })
   })
 
