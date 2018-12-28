@@ -7,7 +7,7 @@ const urljoin = require('url-join')
 const errors = require('../lib/errors')
 const htmlParser = require('../lib/html-parsing')
 const sanitizer = require('../lib/sanitizer')
-const {log} = require('../lib/log')
+const { log } = require('../lib/log')
 
 exports.initialize = async () => {
   if (!process.env.GH_TOKEN) { throw new errors.InitializeError('Must specify GH_TOKEN environment variable') }

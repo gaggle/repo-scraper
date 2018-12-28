@@ -32,17 +32,17 @@ describe('stableStringify', () => {
   })
 
   it('should stringify a hash with two spaces and newlines', () => {
-    const result = sanitizer.stableStringify({'foo': 'bar'})
+    const result = sanitizer.stableStringify({ 'foo': 'bar' })
     expect(result).toEqual('{\n  "foo": "bar"\n}')
   })
 
   it('should alphabetize entries', () => {
-    const result = sanitizer.stableStringify({'z': 'foo', 'a': 'foo'})
+    const result = sanitizer.stableStringify({ 'z': 'foo', 'a': 'foo' })
     expect(result).toEqual('{\n  "a": "foo",\n  "z": "foo"\n}')
   })
 
   it('should ignore casing when alphabetizing', () => {
-    const result = sanitizer.stableStringify({'b': 'foo', 'a': 'foo', 'B': 'foo'})
+    const result = sanitizer.stableStringify({ 'b': 'foo', 'a': 'foo', 'B': 'foo' })
     expect(result).toEqual('{\n  "a": "foo",\n  "B": "foo",\n  "b": "foo"\n}')
   })
 })

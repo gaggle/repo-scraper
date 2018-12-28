@@ -13,11 +13,11 @@ describe('HtmlGetter', () => {
 
   describe('(constructor)', () => {
     it('should refuse to construct if maxAttempts is too low', () => {
-      expect(() => new HtmlGetter({maxAttempts: 0})).toThrow()
+      expect(() => new HtmlGetter({ maxAttempts: 0 })).toThrow()
     })
 
     it('should refuse to construct if retryDelay is too low', () => {
-      expect(() => new HtmlGetter({retryDelay: -1})).toThrow()
+      expect(() => new HtmlGetter({ retryDelay: -1 })).toThrow()
     })
   })
 
@@ -33,7 +33,7 @@ describe('HtmlGetter', () => {
     it('should accept url in options', async () => {
       const ctx = nock('http://foo.com').get('/').reply(200)
 
-      await htmlGetter.makeRequest({url: 'http://foo.com'})
+      await htmlGetter.makeRequest({ url: 'http://foo.com' })
 
       ctx.done()
     })
@@ -67,7 +67,7 @@ describe('HtmlGetter', () => {
         .get('/')
         .delay(2000)
         .reply(200, 'foo')
-      htmlGetter = new HtmlGetter({timeout: 1})
+      htmlGetter = new HtmlGetter({ timeout: 1 })
 
       try {
         await htmlGetter.makeRequest('http://foo.com')
@@ -85,7 +85,7 @@ describe('HtmlGetter', () => {
         .reply(504)
         .get('/')
         .reply(200, 'foo')
-      htmlGetter = new HtmlGetter({maxAttempts: 2, retryDelay: 0})
+      htmlGetter = new HtmlGetter({ maxAttempts: 2, retryDelay: 0 })
 
       const buffer = await htmlGetter.makeRequest('http://foo.com')
 
@@ -98,7 +98,7 @@ describe('HtmlGetter', () => {
       const ctx = nock('http://foo.com')
         .get('/')
         .reply(504)
-      htmlGetter = new HtmlGetter({maxAttempts: 1})
+      htmlGetter = new HtmlGetter({ maxAttempts: 1 })
 
       try {
         await htmlGetter.makeRequest('http://foo.com')

@@ -1,5 +1,5 @@
 /* global jest, describe, it, beforeEach, afterEach, expect */
-const {StatusCodeError} = require('request-promise-core/lib/errors.js')
+const { StatusCodeError } = require('request-promise-core/lib/errors.js')
 
 describe('cli', () => {
   let errors
@@ -180,7 +180,7 @@ describe('cli', () => {
   })
 })
 
-const fakeResponse = (status, body) => ({toJSON: () => ({body: Buffer.from(body), statusCode: status})})
+const fakeResponse = (status, body) => ({ toJSON: () => ({ body: Buffer.from(body), statusCode: status }) })
 
 const setArgv = (...args) => {
   process.argv = [process.execPath, __filename, ...args]

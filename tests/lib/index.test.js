@@ -53,20 +53,20 @@ describe('main', () => {
   it('should save container data', async () => {
     const outfolder = path.join(tmpPath, 'custom-static/')
     const filepath = path.join(outfolder, 'data.json')
-    CachedRequester.mockImplementationOnce(() => ({data: {foo: 'bar'}}))
+    CachedRequester.mockImplementationOnce(() => ({ data: { foo: 'bar' } }))
 
-    await main({outfolder: outfolder})
+    await main({ outfolder: outfolder })
 
-    const ideal = JSON.stringify({foo: 'bar'}, null, 2)
+    const ideal = JSON.stringify({ foo: 'bar' }, null, 2)
     expect(await contentsOfFile(filepath)).toEqual(ideal)
   })
 
   it('should save container static files to outfolder', async () => {
     const outfolder = path.join(tmpPath, 'custom-static/')
-    const staticFiles = {'foo.txt': Buffer.from('content')}
-    CachedRequester.mockImplementationOnce(() => ({staticFiles: staticFiles}))
+    const staticFiles = { 'foo.txt': Buffer.from('content') }
+    CachedRequester.mockImplementationOnce(() => ({ staticFiles: staticFiles }))
 
-    await main({outfolder: outfolder})
+    await main({ outfolder: outfolder })
 
     expect(fileutils.copyDataToDir).toBeCalledWith(outfolder, staticFiles)
   })

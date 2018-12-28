@@ -1,5 +1,5 @@
 /* global describe, it, expect */
-const {join, resolve} = require('path')
+const { join, resolve } = require('path')
 
 const prettyPath = require('../../lib/pretty-path')
 
@@ -15,7 +15,7 @@ describe('pretty-path', () => {
   })
 
   it('should always return absolute path if flag is specified', () => {
-    const res = prettyPath('foo', {alwaysAbsolute: true})
+    const res = prettyPath('foo', { alwaysAbsolute: true })
     expect(res).toEqual(join(process.cwd(), 'foo'))
   })
 })
