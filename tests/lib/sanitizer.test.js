@@ -42,7 +42,7 @@ describe('stableStringify', () => {
   })
 
   it('should ignore casing when alphabetizing', () => {
-    const result = sanitizer.stableStringify({ 'b': 'foo', 'a': 'foo', 'B': 'foo' })
-    expect(result).toEqual('{\n  "a": "foo",\n  "B": "foo",\n  "b": "foo"\n}')
+    const result = sanitizer.stableStringify({ 'c': 'foo', 'a': 'foo', 'B': 'foo' })
+    expect(result).toEqual('{\n  "a": "foo",\n  "B": "foo",\n  "c": "foo"\n}')
   })
 })
