@@ -52,7 +52,7 @@ exports.scrape = async container => {
       container.addStaticFile(filepath, resource)
 
       return {
-        canonical_src: parsedEl.canonical_src || downloadUri.href,
+        canonicalSrc: parsedEl.canonical_src || downloadUri.href,
         href: parsedEl.href,
         size: size,
         src: filepath
@@ -100,18 +100,18 @@ exports.scrape = async container => {
     await container.setRepoData(el.full_name, {
       badges,
       description: el.description,
-      full_name: el.full_name,
+      fullName: el.full_name,
       id: el.full_name,
       language: el.language,
-      open_issues: el.open_issues_count,
-      open_issues_html_url: urljoin(el.html_url, 'issues'),
-      open_pullrequests: el.open_issues_count,
-      open_pullrequests_html_url: urljoin(el.html_url, 'pulls'),
-      owner_html_url: el.owner.html_url,
-      owner_name: el.owner.login,
-      readme_html: readmeHtml,
-      repo_html_url: el.html_url,
-      repo_name: el.name
+      openIssues: el.open_issues_count,
+      openIssuesHtmlUrl: urljoin(el.html_url, 'issues'),
+      openPullrequests: el.open_issues_count,
+      openPullrequestsHtmlUrl: urljoin(el.html_url, 'pulls'),
+      ownerHtmlUrl: el.owner.html_url,
+      ownerName: el.owner.login,
+      readmeHtml: readmeHtml,
+      repoHtmlUrl: el.html_url,
+      repoName: el.name
     })
   }))
 }

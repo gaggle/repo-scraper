@@ -74,11 +74,11 @@ describe('scrape', () => {
 
     expectMockDataToEqual(objContaining({
       description: 'Foo bar baz',
-      full_name: 'user/name',
-      owner_html_url: 'https://github.com/user',
-      owner_name: 'user',
-      repo_html_url: 'https://github.com/user/name',
-      repo_name: 'name'
+      fullName: 'user/name',
+      ownerHtmlUrl: 'https://github.com/user',
+      ownerName: 'user',
+      repoHtmlUrl: 'https://github.com/user/name',
+      repoName: 'name'
     }))
   })
 
@@ -88,8 +88,8 @@ describe('scrape', () => {
     await recipe.scrape(container)
 
     expectMockDataToEqual(objContaining({
-      open_issues: 0,
-      open_issues_html_url: 'https://github.com/user/name/issues'
+      openIssues: 0,
+      openIssuesHtmlUrl: 'https://github.com/user/name/issues'
     }))
   })
 
@@ -99,8 +99,8 @@ describe('scrape', () => {
     await recipe.scrape(container)
 
     expectMockDataToEqual(objContaining({
-      open_pullrequests: 0,
-      open_pullrequests_html_url: 'https://github.com/user/name/pulls'
+      openPullrequests: 0,
+      openPullrequestsHtmlUrl: 'https://github.com/user/name/pulls'
     }))
   })
 
@@ -114,7 +114,7 @@ describe('scrape', () => {
 
     expectMockDataToEqual(objContaining({
       badges: [],
-      readme_html: null
+      readmeHtml: null
     }))
   })
 
@@ -126,7 +126,7 @@ describe('scrape', () => {
     await recipe.scrape(container)
 
     expectMockDataToEqual(objContaining({
-      readme_html: htmlify('<div><p>foo</p></div>')
+      readmeHtml: htmlify('<div><p>foo</p></div>')
     }))
   })
 
@@ -183,7 +183,7 @@ describe('scrape', () => {
 
       expectMockDataToEqual(objContaining({
         badges: [objContaining({
-          'canonical_src': 'https://raw.githubusercontent.com/user/name/master/path/some-file.png'
+          'canonicalSrc': 'https://raw.githubusercontent.com/user/name/master/path/some-file.png'
         })]
       }))
     })
@@ -213,7 +213,7 @@ describe('scrape', () => {
 
       expectMockDataToEqual(objContaining({
         badges: [objContaining({
-          'canonical_src': 'http://a/canonical/path.png'
+          'canonicalSrc': 'http://a/canonical/path.png'
         })]
       }))
     })
