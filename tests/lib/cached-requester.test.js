@@ -19,7 +19,7 @@ describe('CachedHtmlContainer', () => {
     jest.useFakeTimers()
     cache = new Cached()
     getter = new HtmlGetter()
-    container = new Container({ cache, requestGetter: getter })
+    container = new Container({ cache, requestGetter: getter, repoDefaults: { badges: [] } })
   })
 
   afterEach(() => {
@@ -178,13 +178,13 @@ describe('CachedHtmlContainer', () => {
     it('should set data for repo entry', () => {
       container.setRepoData('foo', { ham: 'spam' })
 
-      expect(container.data.repos.foo).toEqual(expect.objectContaining({ ham: 'spam' }))
+      expect(container.getData().repos.foo).toEqual(expect.objectContaining({ ham: 'spam' }))
     })
 
     it('should specify badges as array by default', () => {
       container.setRepoData('foo')
 
-      expect(container.data.repos.foo).toEqual(expect.objectContaining({ badges: [] }))
+      expect(container.getData().repos.foo).toEqual(expect.objectContaining({ badges: [] }))
     })
   })
 })

@@ -53,7 +53,7 @@ describe('main', () => {
   it('should save container data', async () => {
     const outfolder = path.join(tmpPath, 'custom-static/')
     const filepath = path.join(outfolder, 'data.json')
-    CachedRequester.mockImplementationOnce(() => ({ data: { foo: 'bar' } }))
+    CachedRequester.mockImplementationOnce(() => getCachedRequesterMock({ data: { foo: 'bar' } }))
 
     await main({ outfolder: outfolder })
 
@@ -64,7 +64,7 @@ describe('main', () => {
   it('should save container static files to outfolder', async () => {
     const outfolder = path.join(tmpPath, 'custom-static/')
     const staticFiles = { 'foo.txt': Buffer.from('content') }
-    CachedRequester.mockImplementationOnce(() => ({ staticFiles: staticFiles }))
+    CachedRequester.mockImplementationOnce(() => getCachedRequesterMock({ staticFiles }))
 
     await main({ outfolder: outfolder })
 
@@ -84,3 +84,10 @@ describe('main', () => {
     return buffer.toString()
   }
 })
+
+const getCachedRequesterMock = ({ data, staticFiles }) => {
+  return {
+    getData: () => (data || {}),
+    getStaticFiles: () => (staticFiles || {})
+  }
+}
