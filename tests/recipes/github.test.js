@@ -299,6 +299,12 @@ describe('scrape', () => {
 
     expect(recipe.scrape(container)).rejects.toBeInstanceOf(errors.InitializeError)
   })
+
+  it('should fall back to wrapping the raw err if "user_repos" url promise fails without an error property', async () => {
+    container.safeRequest.mockImplementation(() => { throw new Error('Oh no') })
+
+    expect(recipe.scrape(container)).rejects.toBeInstanceOf(errors.InitializeError)
+  })
 })
 
 const getReadme = (content, imgEntries = []) => {
