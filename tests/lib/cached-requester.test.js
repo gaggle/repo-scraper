@@ -19,7 +19,7 @@ describe('CachedHtmlContainer', () => {
     jest.useFakeTimers()
     cache = new Cached()
     getter = new HtmlGetter()
-    container = new Container({ cache, requestGetter: getter })
+    container = new Container({ cache, requestGetter: getter, repoDefaults: { badges: [] } })
   })
 
   afterEach(() => {
@@ -45,15 +45,15 @@ describe('CachedHtmlContainer', () => {
 
     it('should set creation date in data store', () => {
       const c = new Container({ cache, getter })
-      expect(c.data.created_at).toBeInstanceOf(Date)
+      expect(c.getData().createdAt).toBeInstanceOf(Date)
     })
   })
 
   describe('#addStaticFiles', () => {
     it('should add entries to file store', async () => {
-      await container.addStaticFile('foo', 'bar')
+      container.addStaticFile('foo', 'bar')
 
-      expect(container.staticFiles).toEqual({ 'foo': 'bar' })
+      expect(container.getStaticFiles()).toEqual({ 'foo': 'bar' })
     })
   })
 
@@ -178,13 +178,13 @@ describe('CachedHtmlContainer', () => {
     it('should set data for repo entry', () => {
       container.setRepoData('foo', { ham: 'spam' })
 
-      expect(container.data.repos.foo).toEqual(expect.objectContaining({ ham: 'spam' }))
+      expect(container.getData().repos.foo).toEqual(expect.objectContaining({ ham: 'spam' }))
     })
 
     it('should specify badges as array by default', () => {
       container.setRepoData('foo')
 
-      expect(container.data.repos.foo).toEqual(expect.objectContaining({ badges: [] }))
+      expect(container.getData().repos.foo).toEqual(expect.objectContaining({ badges: [] }))
     })
   })
 })
