@@ -87,8 +87,8 @@ exports.scrape = async container => {
    * It's useful during dev to limit the repos being processed,
    * so lets do a quick regex filtering via env. variable
    */
-  if (process.env.GH_DEBUG_FILTER_REPO) {
-    reposInfo = reposInfo.filter(el => RegExp(process.env.GH_DEBUG_FILTER_REPO).test(el.full_name))
+  if (process.env.DEBUG_FILTER_REPO) {
+    reposInfo = reposInfo.filter(el => RegExp(process.env.DEBUG_FILTER_REPO).test(el.full_name))
   }
 
   await Promise.all(await reposInfo.map(async el => {

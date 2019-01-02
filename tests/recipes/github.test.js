@@ -276,7 +276,7 @@ describe('scrape', () => {
 
   describe('debug filtering', () => {
     it('should allow .* to find all repos', async () => {
-      process.env.GH_DEBUG_FILTER_REPO = '.*'
+      process.env.DEBUG_FILTER_REPO = '.*'
       container.safeRequest.mockReturnValueOnce(getUserReposResponse())
 
       await recipe.scrape(container)
@@ -285,7 +285,7 @@ describe('scrape', () => {
     })
 
     it('should allow filtering away all repos', async () => {
-      process.env.GH_DEBUG_FILTER_REPO = 'FOOBAR'
+      process.env.DEBUG_FILTER_REPO = 'FOOBAR'
       container.safeRequest.mockReturnValueOnce(getUserReposResponse())
 
       await recipe.scrape(container)
