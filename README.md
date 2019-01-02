@@ -8,5 +8,12 @@ In principle the scraper supports multiple repository providers, but only GitHub
 * `npm test` for tests and coverage
 
 
+## Cutting a new release
+Run this command to automatically increment version, build, commit, tag, and push a new release:
+```bash
+npm test && npm version patch && (export VERSION=`node -p "require('./package.json').version"`; git push && git push origin v$VERSION)
+```
+
+
 [repo-lister]: https://github.com/gaggle/repo-lister
 [gl-pr]: https://github.com/gaggle/repo-scraper/pull/1
