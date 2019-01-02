@@ -116,7 +116,8 @@ exports.scrape = async container => {
       ownerName: el.owner.login,
       readmeHtml: readmeHtml,
       repoHtmlUrl: el.html_url,
-      repoName: el.name
+      repoName: el.name,
+      scrapeRecipe: 'github'
     })
   }))
 }

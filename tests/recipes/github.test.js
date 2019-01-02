@@ -59,6 +59,14 @@ describe('scrape', () => {
 
   const expectMockDataToEqual = ideal => expect(container.mockData[userRepo.full_name]).toEqual(ideal)
 
+  it('should specify scrape recipe', async () => {
+    container.safeRequest.mockReturnValueOnce(getUserReposResponse())
+
+    await recipe.scrape(container)
+
+    expectMockDataToEqual(objContaining({ scrapeRecipe: 'github' }))
+  })
+
   it('should scrape unique id', async () => {
     container.safeRequest.mockReturnValueOnce(getUserReposResponse())
 
