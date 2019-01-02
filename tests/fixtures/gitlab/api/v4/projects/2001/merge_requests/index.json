@@ -1,0 +1,51 @@
+[
+  {
+    "id": 21694330,
+    "iid": 1,
+    "project_id": 2001,
+    "title": "WIP: Develop",
+    "description": "Just testing around",
+    "state": "opened",
+    "created_at": "2019-01-02T19:27:49.449Z",
+    "updated_at": "2019-01-02T19:27:49.449Z",
+    "merged_by": null,
+    "merged_at": null,
+    "closed_by": null,
+    "closed_at": null,
+    "target_branch": "master",
+    "source_branch": "develop",
+    "upvotes": 0,
+    "downvotes": 0,
+    "author": {
+      "id": 2217,
+      "name": "Jon Lauridsen",
+      "username": "gaggle",
+      "state": "active",
+      "avatar_url": "https://secure.gravatar.com/avatar/d92ea202a1c0ed94d48f3a1a56eb613c?s=80&d=identicon",
+      "web_url": "https://gitlab.com/gaggle"
+    },
+    "assignee": null,
+    "source_project_id": 2001,
+    "target_project_id": 2001,
+    "labels": [],
+    "work_in_progress": true,
+    "milestone": null,
+    "merge_when_pipeline_succeeds": false,
+    "merge_status": "cannot_be_merged",
+    "sha": "cbfd74c9c0bd03c917ec321929b1fba10b984167",
+    "merge_commit_sha": null,
+    "user_notes_count": 0,
+    "discussion_locked": null,
+    "should_remove_source_branch": null,
+    "force_remove_source_branch": false,
+    "web_url": "https://gitlab.com/gaggle/playground/merge_requests/1",
+    "time_stats": {
+      "time_estimate": 0,
+      "total_time_spent": 0,
+      "human_time_estimate": null,
+      "human_total_time_spent": null
+    },
+    "squash": false,
+    "approvals_before_merge": null
+  }
+]
