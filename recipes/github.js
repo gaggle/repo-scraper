@@ -14,58 +14,7 @@ exports.initialize = async () => {
 }
 
 exports.scrape = async container => {
-  const scrapeBadgesFromReadme = async (repoEl, readme) => {
-    const images = await htmlParser.parseImages(readme)
-    return lo.compact(await Promise.all(images.map(async parsedEl => {
-      let srcUri = url.parse(parsedEl.src)
-
-      let downloadUri = srcUri
-      if (!downloadUri.host) {
-        const base = 'https://raw.githubusercontent.com'
-        downloadUri = url.parse(urljoin(base, repoEl.full_name, 'master', downloadUri.path))
-      }
-
-      const resource = await container.safeRequest(`resource: ${parsedEl.canonical_src || downloadUri.href}`, downloadUri.href)
-
-      if (!resource) return
-      let size
-      try {
-        size = sizeOf(resource)
-      } catch (err) {
-        console.warn(`Error getting image size: ${JSON.stringify(parsedEl, null, 2)}`)
-        return
-      }
-      if (size.width > 300 || size.height > 40) return
-
-      let filepath
-      if (srcUri.host) {
-        const filename = sanitizer.hashify(srcUri.href)
-        filepath = path.join(repoEl.full_name, filename)
-      } else {
-        filepath = path.join(repoEl.full_name, srcUri.pathname)
-      }
-
-      if (path.extname(filepath).indexOf(size.type) === -1) {
-        filepath = `${filepath}.${size.type}`
-      }
-
-      container.addStaticFile(filepath, resource)
-
-      return {
-        canonicalSrc: parsedEl.canonical_src || downloadUri.href,
-        href: parsedEl.href,
-        size: size,
-        src: filepath
-      }
-    })))
-  }
-
-  const textRequest = async (...args) => {
-    const buffer = await container.safeRequest(...args)
-    return buffer ? buffer.toString() : buffer
-  }
-
-  const reposInfoRequest = textRequest('user_repos', {
+  const reposInfoRequest = textRequest(container, 'user_repos', {
     url: 'https://api.github.com/user/repos?per_page=100',
     headers: {
       Accept: 'application/vnd.github.v3+json',
@@ -92,7 +41,7 @@ exports.scrape = async container => {
   }
 
   await Promise.all(await reposInfo.map(async el => {
-    const readmeHtml = await textRequest(`readme: ${el.full_name}`, {
+    const readmeHtml = await textRequest(container, `readme: ${el.full_name}`, {
       url: `https://api.github.com/repos/${el.full_name}/readme`,
       headers: {
         Accept: 'application/vnd.github.v3.html',
@@ -100,9 +49,9 @@ exports.scrape = async container => {
       }
     })
 
-    const badges = await scrapeBadgesFromReadme(el, readmeHtml)
+    const badges = await scrapeBadgesFromReadme(container, el, readmeHtml)
 
-    await container.setRepoData(el.full_name, {
+    const data = {
       badges,
       description: el.description,
       fullName: el.full_name,
@@ -118,6 +67,58 @@ exports.scrape = async container => {
       repoHtmlUrl: el.html_url,
       repoName: el.name,
       scrapeRecipe: 'github'
-    })
+    }
+    await container.setRepoData(el.full_name, data)
   }))
+}
+
+const scrapeBadgesFromReadme = async (container, repoEl, readme) => {
+  const images = await htmlParser.parseImages(readme)
+  return lo.compact(await Promise.all(images.map(async parsedEl => {
+    let srcUri = url.parse(parsedEl.src)
+
+    let downloadUri = srcUri
+    if (!downloadUri.host) {
+      const base = 'https://raw.githubusercontent.com'
+      downloadUri = url.parse(urljoin(base, repoEl.full_name, 'master', downloadUri.path))
+    }
+
+    const resource = await container.safeRequest(`resource: ${parsedEl.canonical_src || downloadUri.href}`, downloadUri.href)
+
+    if (!resource) return
+    let size
+    try {
+      size = sizeOf(resource)
+    } catch (err) {
+      console.warn(`Error getting image size: ${JSON.stringify(parsedEl, null, 2)}`)
+      return
+    }
+    if (size.width > 300 || size.height > 40) return
+
+    let filepath
+    if (srcUri.host) {
+      const filename = sanitizer.hashify(srcUri.href)
+      filepath = path.join(repoEl.full_name, filename)
+    } else {
+      filepath = path.join(repoEl.full_name, srcUri.pathname)
+    }
+
+    if (path.extname(filepath).indexOf(size.type) === -1) {
+      filepath = `${filepath}.${size.type}`
+    }
+
+    container.addStaticFile(filepath, resource)
+
+    return {
+      canonicalSrc: parsedEl.canonical_src || downloadUri.href,
+      href: parsedEl.href,
+      size: size,
+      src: filepath
+    }
+  })))
+}
+
+const textRequest = async (container, ...args) => {
+  const buffer = await container.safeRequest(...args)
+  return buffer ? buffer.toString() : buffer
 }
