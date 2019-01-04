@@ -51,15 +51,17 @@ exports.scrape = async container => {
 
     const badges = await scrapeBadgesFromReadme(container, el, readmeHtml)
 
+    const issuesAndPrs = await fetchIssuesAndPrs(container, el)
+
     const data = {
       badges,
       description: el.description,
       fullName: el.full_name,
       id: el.full_name,
       language: el.language,
-      openIssues: el.open_issues_count,
+      openIssues: issuesAndPrs.issues_count,
       openIssuesHtmlUrl: urljoin(el.html_url, 'issues'),
-      openPullrequests: el.open_issues_count,
+      openPullrequests: issuesAndPrs.prs_count,
       openPullrequestsHtmlUrl: urljoin(el.html_url, 'pulls'),
       ownerHtmlUrl: el.owner.html_url,
       ownerName: el.owner.login,
@@ -116,6 +118,16 @@ const scrapeBadgesFromReadme = async (container, repoEl, readme) => {
       src: filepath
     }
   })))
+}
+
+const fetchIssuesAndPrs = async (container, repoEl) => {
+  const issuesAndPrs = { issues_count: 0, prs_count: 0 }
+  if (repoEl.open_issues_count === 0) return issuesAndPrs
+
+  issuesAndPrs.issues_count = repoEl.open_issues_count
+  issuesAndPrs.prs_count = repoEl.open_issues_count
+
+  return issuesAndPrs
 }
 
 const textRequest = async (container, ...args) => {
