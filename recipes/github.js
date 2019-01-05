@@ -51,15 +51,17 @@ exports.scrape = async container => {
 
     const badges = await scrapeBadgesFromReadme(container, el, readmeHtml)
 
+    const issuesAndPrs = await fetchIssuesAndPrs(container, el)
+
     const data = {
       badges,
       description: el.description,
       fullName: el.full_name,
       id: el.full_name,
       language: el.language,
-      openIssues: el.open_issues_count,
+      openIssues: issuesAndPrs.issues_count,
       openIssuesHtmlUrl: urljoin(el.html_url, 'issues'),
-      openPullrequests: el.open_issues_count,
+      openPullrequests: issuesAndPrs.prs_count,
       openPullrequestsHtmlUrl: urljoin(el.html_url, 'pulls'),
       ownerHtmlUrl: el.owner.html_url,
       ownerName: el.owner.login,
@@ -116,6 +118,25 @@ const scrapeBadgesFromReadme = async (container, repoEl, readme) => {
       src: filepath
     }
   })))
+}
+
+const fetchIssuesAndPrs = async (container, repoEl) => {
+  const issuesAndPrs = { issues_count: 0, prs_count: 0 }
+  if (repoEl.open_issues_count === 0) return issuesAndPrs
+
+  const issues = JSON.parse(await textRequest(container, `issues: ${repoEl.full_name}`, {
+    url: `https://api.github.com/repos/${repoEl.full_name}/issues`,
+    headers: {
+      Accept: 'application/vnd.github.v3+json',
+      Authorization: `Bearer ${process.env.GH_TOKEN}`
+    }
+  }))
+
+  for (const e of issues) {
+    e.pull_request ? issuesAndPrs.prs_count++ : issuesAndPrs.issues_count++
+  }
+
+  return issuesAndPrs
 }
 
 const textRequest = async (container, ...args) => {
