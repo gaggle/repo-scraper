@@ -1,8 +1,6 @@
 /* global jest, describe, it, beforeEach, afterEach, expect */
 const lo = require('lodash')
 
-const objContaining = expect.objectContaining
-
 const Container = require('../../lib/cached-requester')
 const errors = require('../../lib/errors')
 const recipe = require('../../recipes/gitlab')
@@ -10,6 +8,10 @@ const recipe = require('../../recipes/gitlab')
 const languagesData = require('../fixtures/gitlab/api/v4/projects/2001/languages')
 const mergeRequestsData = require('../fixtures/gitlab/api/v4/projects/2001/merge_requests')
 const projectsData = require('../fixtures/gitlab/api/v4/projects/owned=true')
+
+const helpers = require('../helpers')
+
+const objContaining = expect.objectContaining
 
 jest.mock('../../lib/cached-requester', () => jest.fn().mockImplementation(() => ({
   addStaticFile: jest.fn(),
@@ -136,23 +138,8 @@ describe('scrape', () => {
   })
 })
 
-const bufferify = (data) => Buffer.from(JSON.stringify(data))
-
-const mockRequests = (mockFn) => {
-  return mockFn
-    .mockImplementation((cacheKey, payload) => {
-      if (cacheKey === 'gl_projects') {
-        return bufferify(projectsData)
-      }
-
-      if (cacheKey.includes('gl_merge_request')) {
-        return bufferify(mergeRequestsData)
-      }
-
-      if (cacheKey.includes('gl_languages')) {
-        return bufferify(languagesData)
-      }
-
-      throw new Error(`Unknown request for ${payload.url}`)
-    })
-}
+const mockRequests = (...args) => helpers.mockRequests({
+  gl_languages: helpers.bufferify(languagesData),
+  gl_merge_request: helpers.bufferify(mergeRequestsData),
+  gl_projects: helpers.bufferify(projectsData)
+}, ...args)
