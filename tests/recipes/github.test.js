@@ -7,6 +7,9 @@ const errors = require('../../lib/errors')
 const recipe = require('../../recipes/github')
 const sanitizer = require('../../lib/sanitizer')
 
+const issuesWithOneIssueOnePr = require('../fixtures/github/api.github.com/repos/owner/repo/issues/200.index.with_one_issue_and_one_pr')
+const issuesWithOnePr = require('../fixtures/github/api.github.com/repos/owner/repo/issues/200.index.with_one_pr')
+const repoWithOneIssueOnePr = require('../fixtures/github/api.github.com/user/repos/200.index.with_one_issue_and_one_pr')
 const userReposData200 = require('../fixtures/github/api.github.com/user/repos/200.index.json')
 const userReposData401 = require('../fixtures/github/api.github.com/user/repos/401.index.json')
 
@@ -90,23 +93,29 @@ describe('scrape', () => {
   })
 
   it('should scrape issues', async () => {
-    mockRequests(container.safeRequest)
+    mockRequests(container.safeRequest, {
+      user_repos: helpers.bufferify(repoWithOneIssueOnePr),
+      issues: helpers.bufferify(issuesWithOneIssueOnePr)
+    })
 
     await recipe.scrape(container)
 
     expectMockDataToEqual(objContaining({
-      openIssues: 0,
+      openIssues: 1,
       openIssuesHtmlUrl: 'https://github.com/user/name/issues'
     }))
   })
 
   it('should scrape pullrequests', async () => {
-    mockRequests(container.safeRequest)
+    mockRequests(container.safeRequest, {
+      user_repos: helpers.bufferify(repoWithOneIssueOnePr),
+      issues: helpers.bufferify(issuesWithOnePr)
+    })
 
     await recipe.scrape(container)
 
     expectMockDataToEqual(objContaining({
-      openPullrequests: 0,
+      openPullrequests: 1,
       openPullrequestsHtmlUrl: 'https://github.com/user/name/pulls'
     }))
   })

@@ -124,8 +124,17 @@ const fetchIssuesAndPrs = async (container, repoEl) => {
   const issuesAndPrs = { issues_count: 0, prs_count: 0 }
   if (repoEl.open_issues_count === 0) return issuesAndPrs
 
-  issuesAndPrs.issues_count = repoEl.open_issues_count
-  issuesAndPrs.prs_count = repoEl.open_issues_count
+  const issues = JSON.parse(await textRequest(container, `issues: ${repoEl.full_name}`, {
+    url: `https://api.github.com/repos/${repoEl.full_name}/issues`,
+    headers: {
+      Accept: 'application/vnd.github.v3+json',
+      Authorization: `Bearer ${process.env.GH_TOKEN}`
+    }
+  }))
+
+  for (const e of issues) {
+    e.pull_request ? issuesAndPrs.prs_count++ : issuesAndPrs.issues_count++
+  }
 
   return issuesAndPrs
 }
