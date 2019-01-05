@@ -15,7 +15,6 @@ exports.mockRequests = (defaultResponses, mockFn, responses) => {
   return mockFn
     .mockImplementation((cacheKey, payload) => {
       for (const key in actualResponses) {
-        if (!actualResponses.hasOwnProperty(key)) continue
         if (cacheKey.includes(key)) {
           return actualResponses[key]
         }
